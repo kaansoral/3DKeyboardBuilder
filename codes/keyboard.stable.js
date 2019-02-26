@@ -1,43 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>3D Keyboard Builder</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8">
-		<script src="js/lib/three.min.js"></script>
-		<script src="js/lib/orbitcontrols.js"></script>
-		<!-- fallback if no WebGL -->
-		<script src="js/lib/projector.js"></script>
-		<script src="js/lib/canvasrenderer.js"></script>
-		<script src="js/lib/jquery-2.1.3.min.js"></script>
-		<script src="js/cad/csg.js"></script>
-		<script src="js/cad/threecsg.js"></script>
-		<script src="js/cad/openjscad.js"></script>
-		<script src="js/cad/formats.js"></script>
-		<script src="js/functions.js"></script>
-		<link rel="stylesheet" href="css/main.css" type="text/css">
-		<script>
-			var gProcessor=null;
-			OpenJsCad.AlertUserOfUncaughtExceptions();
-			function onload()
-			{
-				gProcessor = new OpenJsCad.Processor(document.getElementById("viewer"));
-				updateSolid();
-			}
-			function updateSolid()
-			{
-				// console.log(document.getElementById('code').value);
-				gProcessor.setJsCad(document.getElementById('code').value);
-			}
-		</script>
-	</head>
-	<body onload="onload()">
-		<b>Prototype 3D Keyboard Builder</b>
-		<div style='float:right; color:#3B8DF1'>
-			<a href="https://github.com/kaansoral/3DKeyboardBuilder" class="cancela"><b>More Info on GitHub!</b></a>
-		</div>
-		<div id="viewer"></div>
-		<textarea id="code">//Paste your http://www.keyboard-layout-editor.com/ "Raw Data" below inside an Array i.e. []
-//If it's not a 60% keyboard, manually change the width/height values below
 var data=[
 	[{c:"#1c1c1a",t:"#d9d9d9",a:6},"Esc",{c:"#525249",a:4,f:4},"!\n1","@\n2","#\n3","$\n4","%\n5","^\n6","&\n7","*\n8","(\n9",")\n0","_\n-","+\n=",{c:"#1c1c1a",a:7,f:3,w:2},"← Backspace"],
 	[{a:4,w:1.5},"⇤\n⇥\n\n\n\n\nTab",{c:"#525249",f:5},"Q","W","E","R","T","Y","U","I","O","P",{f:4},"{\n[","}\n]",{w:1.5},"|\n\\"],
@@ -48,23 +8,22 @@ var data=[
 ];
 
 var kerf=0.1;
-var width=285;
-var height=95;
 
 function main() {
+	var width=285;
+	var height=95;
 	var result=CSG.cube({
 		center: [0, 0, 0],
 		radius: [width/2,height/2,5/2]
 	});
 	var line=0;
 	data.forEach(function(line_def){
-		var w=1,dx=14,cx=0,h=1;
+		var w=1,dx=14,cx=0;
 		line_def.forEach(function(current){
 			if(is_object(current))
 			{
 				if(current.x) cx+=current.x*19;
 				if(current.w) w=current.w;
-				if(current.h) error=horizontal_switches_arent_handled_yet;
 			}
 			else
 			{
@@ -80,7 +39,7 @@ function main() {
 		});
 		line++;
 	});
-	result=result.setColor([0.8, 0.8, 0.8]);
+	result=result.setColor([0, 0.5, 0.5]);
 	return result;
 }
 
@@ -132,8 +91,4 @@ function cherry_mx()
 	return result;
 }
 
-// Known bugs: If radius includes a 0, it causes the rendering to halt indefinitely [08/10/18]</textarea>
-		<button style="display: inline; float:right" onclick="updateSolid()" >Update Rendering</button>
-		<div style='margin-bottom:20px'></div>
-	</body>
-</html>
+// Known bugs: If radius includes a 0, it causes the rendering to halt indefinitely [08/10/18]
