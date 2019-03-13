@@ -1,13 +1,13 @@
 var data=[
-	[{c:"#1c1c1a",t:"#d9d9d9",a:6},"Esc",{c:"#525249",a:4,f:4},"!\n1","@\n2","#\n3","$\n4","%\n5","^\n6","&\n7","*\n8","(\n9",")\n0","_\n-","+\n=",{c:"#1c1c1a",a:7,f:3,w:2},"← Backspace"],
-	[{a:4,w:1.5},"⇤\n⇥\n\n\n\n\nTab",{c:"#525249",f:5},"Q","W","E","R","T","Y","U","I","O","P",{f:4},"{\n[","}\n]",{w:1.5},"|\n\\"],
-	[{c:"#1c1c1a",t:"#f7f7f7",a:5,f:3,w:1.25,w2:1.75,l:true},"\n■\n\n\n■",{x:0.5,c:"#525249",t:"#d9d9d9",a:4,f:5},"A","S","D",{n:true},"F","G","H",{n:true},"J","K","L",{f:4},":\n;","\"\n'",{c:"#1c1c1a",a:6,f:3,w:2.25},"⏎ Enter"],
-	[{w:2.25},"⇧ Shift",{c:"#525249",a:4,f:5},"Z","X","C","V","B","N","M",{f:4},"<\n,",">\n.","?\n/",{x:0.375,c:"#ba2b70",f:6},"↑",{x:0.375,c:"#c9b50e",a:6,f:3},"Fn"],
-	[{x:1,c:"#309ba1",w:1.25},"Alt",{x:0.25,c:"#8f8d8d",a:7,w:1.25},"",{c:"#525249",w:6.25},"",{c:"#8f8d8d",w:1.25},"",{x:0.3,c:"#ba2b70",a:4,f:6},"←",{x:0.075},"↓",{x:0.075},"→"]
-
+	["~\n`","!\n1","@\n2","#\n3","$\n4","%\n5","^\n6","&\n7","*\n8","(\n9",")\n0","_\n-","+\n=",{w:2},"Backspace"],
+	[{w:1.5},"Tab","Q","W","E","R","T","Y","U","I","O","P","{\n[","}\n]",{w:1.5},"|\n\\"],
+	[{w:1.75},"Caps Lock","A","S","D","F","G","H","J","K","L",":\n;","\"\n'",{w:2.25},"Enter"],
+	[{w:2.25},"Shift","Z","X","C","V","B","N","M","<\n,",">\n.","?\n/",{w:1.75},"Shift",{a:7},""],
+	[{a:4,w:1.25},"Ctrl",{w:1.25},"Win",{w:1.25},"Alt",{a:7,w:6.25},"",{a:4,w:1.25},"Alt",{w:1.25},"Win",{w:1.25},"Menu",{w:1.25},"Ctrl"]
 ];
 
-var kerf=0.1;
+var kerf=0.25;
+var increase_height=0.5; // so switches touch the plate but not the PCB
 
 function main() {
 	var width=285;
@@ -39,6 +39,15 @@ function main() {
 		});
 		line++;
 	});
+	result=result.subtract(CSG.cube({ // remove a large piece representing the 1.5mm plate
+		center: [0,0,-2],
+		radius: [200,200,1.5]
+	}));
+	if(increase_height)
+	{
+		result=result.union(result.translate([0,0,increase_height])); // combines the plate with it's slightly moved upwards version, seems like the easiest way to increase the height
+	}
+	result=result.rotateX(180); // best to print this normally, since it won't be visible and the cutouts are easier to print at top
 	result=result.setColor([0.8, 0.8, 0.8]);
 	return result;
 }
@@ -82,11 +91,11 @@ function cherry_mx()
 	});
 	result=result.union(CSG.cube({
 		center: [0, 7, 0],
-		radius: [3.2+kerf,2+kerf,2/2]
+		radius: [3.2+kerf,2,2/2]
 	}));
 	result=result.union(CSG.cube({
 		center: [0,-7, 0],
-		radius: [3.2+kerf,2+kerf,2/2]
+		radius: [3.2+kerf,2,2/2]
 	}));
 	return result;
 }

@@ -1,3 +1,5 @@
+// A code experimenting with 3d plate divisions, so these plate pieces can be printed separately, hold together by the switches, make up both the plate and the keyboard itself, much like the bent steel case 60%'s
+
 var data=[
 	[{c:"#1c1c1a",t:"#d9d9d9",a:6},"Esc",{c:"#525249",a:4,f:4},"!\n1","@\n2","#\n3","$\n4","%\n5","^\n6","&\n7","*\n8","(\n9",")\n0","_\n-","+\n=",{c:"#1c1c1a",a:7,f:3,w:2},"← Backspace"],
 	[{a:4,w:1.5},"⇤\n⇥\n\n\n\n\nTab",{c:"#525249",f:5},"Q","W","E","R","T","Y","U","I","O","P",{f:4},"{\n[","}\n]",{w:1.5},"|\n\\"],
